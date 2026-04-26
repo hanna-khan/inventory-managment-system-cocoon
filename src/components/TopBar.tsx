@@ -1,8 +1,14 @@
 import { Bell, Search, SlidersHorizontal } from 'lucide-react'
 
-type Props = { title: string; subtitle?: string }
+type Props = {
+  title: string
+  subtitle?: string
+  /** Active alert count; 0 hides badge */
+  alertCount?: number
+  onAlertsClick?: () => void
+}
 
-export function TopBar({ title, subtitle }: Props) {
+export function TopBar({ title, subtitle, alertCount = 0, onAlertsClick }: Props) {
   return (
     <header className="flex flex-col gap-4 border-b border-white/10 bg-canvas/80 px-6 py-5 backdrop-blur-md sm:flex-row sm:items-center sm:justify-between">
       <div>
@@ -32,11 +38,20 @@ export function TopBar({ title, subtitle }: Props) {
         </button>
         <button
           type="button"
-          className="relative inline-flex rounded-xl border border-white/10 bg-surface p-2 text-slate-300 transition hover:text-white"
-          aria-label="Notifications"
+          onClick={onAlertsClick}
+          className="relative inline-flex rounded-xl border border-white/10 bg-surface p-2 text-slate-300 transition hover:border-accent/30 hover:text-white"
+          aria-label={
+            alertCount > 0
+              ? `Alerts: ${alertCount} active. Show alert panel.`
+              : 'No active alerts'
+          }
         >
           <Bell className="size-5" strokeWidth={1.75} />
-          <span className="absolute right-1.5 top-1.5 size-2 rounded-full bg-magenta ring-2 ring-surface" />
+          {alertCount > 0 ? (
+            <span className="absolute -right-1 -top-1 flex min-w-5 items-center justify-center rounded-full bg-magenta px-1 text-[10px] font-bold leading-none text-white ring-2 ring-surface">
+              {alertCount > 9 ? '9+' : alertCount}
+            </span>
+          ) : null}
         </button>
         <div
           className="size-10 rounded-full bg-gradient-to-br from-accent to-cyan-600 ring-2 ring-white/10"

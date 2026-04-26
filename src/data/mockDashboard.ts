@@ -97,6 +97,64 @@ export const stockRows: StockRow[] = [
   },
 ]
 
+export type AlertSeverity = 'critical' | 'warning' | 'info'
+
+export type AppAlert = {
+  id: string
+  severity: AlertSeverity
+  title: string
+  message: string
+  sku?: string
+  /** Suggested nav target for “fix it” */
+  targetNav?: 'inventory' | 'orders' | 'forecast'
+}
+
+/** Derive low / critical stock alerts from `stockRows`. */
+export function buildStockAlerts(rows: StockRow[]): AppAlert[] {
+  const list: AppAlert[] = []
+  for (const r of rows) {
+    if (r.status === 'critical') {
+      list.push({
+        id: `stock-critical-${r.sku}`,
+        severity: 'critical',
+        title: 'Reorder now — critical stock',
+        message: `${r.product} (${r.sku}): ${r.onHand} on hand vs reorder ${r.reorder}. ~${r.daysCover} days cover.`,
+        sku: r.sku,
+        targetNav: 'inventory',
+      })
+    } else if (r.status === 'low') {
+      list.push({
+        id: `stock-low-${r.sku}`,
+        severity: 'warning',
+        title: 'Low stock',
+        message: `${r.product} (${r.sku}): ${r.onHand} units left (reorder point ${r.reorder}).`,
+        sku: r.sku,
+        targetNav: 'inventory',
+      })
+    }
+  }
+  return list
+}
+
+/** Ops / policy alerts (demo) — extend or replace with API rules */
+export const systemAlerts: AppAlert[] = [
+  {
+    id: 'unfulfilled-queue',
+    severity: 'warning',
+    title: 'Unfulfilled orders backlog',
+    message:
+      'Several COD orders still unfulfilled past 48h. Check cutting queue and courier handoff.',
+    targetNav: 'orders',
+  },
+  {
+    id: 'dead-stock-watch',
+    severity: 'info',
+    title: 'Dead stock review',
+    message: `Approx PKR ${kpiSummary.deadStockPkr.toLocaleString('en-PK')} tied in slow movers. Consider markdown or bundle.`,
+    targetNav: 'forecast',
+  },
+]
+
 /** Units in stock by age bucket (demo) — replace with warehouse snapshot */
 export const agingByCategory = [
   { name: 'Pret', b0_30: 820, b31_60: 310, b61_90: 120, b90p: 45 },

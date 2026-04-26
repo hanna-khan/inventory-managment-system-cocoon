@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import {
   AlertTriangle,
   Boxes,
@@ -13,13 +13,16 @@ import { InventoryAlertsTable } from './components/InventoryAlertsTable'
 import { KpiCard } from './components/KpiCard'
 import { SalesTrendChart } from './components/SalesTrendChart'
 import { Sidebar } from './components/Sidebar'
+import { StockAlertsStrip } from './components/StockAlertsStrip'
 import { TopBar } from './components/TopBar'
 import { TopSkusChart } from './components/TopSkusChart'
 import {
+  buildStockAlerts,
   categorySplit,
   dailySales,
   kpiSummary,
   stockRows,
+  systemAlerts,
   topSkus,
 } from './data/mockDashboard'
 import { ForecastPage } from './pages/ForecastPage'
@@ -38,6 +41,21 @@ function formatCompact(n: number) {
 
 export default function App() {
   const [nav, setNav] = useState('dashboard')
+  const [dismissedAlertIds, setDismissedAlertIds] = useState<Set<string>>(() => new Set())
+  const [alertsExpanded, setAlertsExpanded] = useState(false)
+
+  const visibleAlerts = useMemo(() => {
+    const merged = [...buildStockAlerts(stockRows), ...systemAlerts]
+    return merged.filter((a) => !dismissedAlertIds.has(a.id))
+  }, [dismissedAlertIds])
+
+  const dismissAlert = useCallback((id: string) => {
+    setDismissedAlertIds((prev) => new Set(prev).add(id))
+  }, [])
+
+  const goFromAlert = useCallback((target: 'inventory' | 'orders' | 'forecast') => {
+    setNav(target)
+  }, [])
 
   const titles = useMemo(
     () => ({
@@ -67,7 +85,23 @@ export default function App() {
     <div className="flex min-h-screen bg-canvas">
       <Sidebar active={nav} onSelect={setNav} />
       <div className="flex min-w-0 flex-1 flex-col">
-        <TopBar title={meta.title} subtitle={meta.subtitle} />
+        <TopBar
+          title={meta.title}
+          subtitle={meta.subtitle}
+          alertCount={visibleAlerts.length}
+          onAlertsClick={
+            visibleAlerts.length > 0
+              ? () => setAlertsExpanded((o) => !o)
+              : undefined
+          }
+        />
+        <StockAlertsStrip
+          alerts={visibleAlerts}
+          expanded={alertsExpanded}
+          onToggle={() => setAlertsExpanded((o) => !o)}
+          onDismiss={dismissAlert}
+          onGoTo={goFromAlert}
+        />
         <main className="flex-1 overflow-y-auto px-4 py-6 sm:px-6 lg:px-8">
           {nav === 'inventory' ? (
             <InventoryPage />
