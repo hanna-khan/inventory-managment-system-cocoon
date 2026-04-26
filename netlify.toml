@@ -1,0 +1,12 @@
+# Netlify must run Vite build and publish the `dist` folder only.
+# If your Git repo root is the parent folder (not `web-app`), set in Netlify UI:
+#   Base directory: web-app
+#   Build command: npm run build   (or leave empty — this file supplies it)
+#   Publish directory: dist
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
