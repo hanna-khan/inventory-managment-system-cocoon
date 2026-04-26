@@ -33,21 +33,21 @@ const labels: Record<keyof typeof colors, string> = {
 
 export function AgingStackedChart({ data }: { data: Row[] }) {
   return (
-    <div className="h-[300px] w-full">
+    <div className="h-[240px] w-full min-w-0 sm:h-[280px] md:h-[300px]">
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
+        <BarChart data={data} margin={{ top: 8, right: 4, left: -8, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
           <XAxis
             dataKey="name"
-            tick={{ fill: '#94a3b8', fontSize: 11 }}
+            tick={{ fill: '#94a3b8', fontSize: 10 }}
             axisLine={false}
             tickLine={false}
           />
           <YAxis
-            tick={{ fill: '#94a3b8', fontSize: 11 }}
+            tick={{ fill: '#94a3b8', fontSize: 10 }}
             axisLine={false}
             tickLine={false}
-            width={40}
+            width={32}
           />
           <Tooltip
             contentStyle={{
@@ -58,7 +58,14 @@ export function AgingStackedChart({ data }: { data: Row[] }) {
             }}
           />
           <Legend
-            wrapperStyle={{ fontSize: 11, paddingTop: 8 }}
+            wrapperStyle={{
+              fontSize: 10,
+              paddingTop: 4,
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '4px 12px',
+              justifyContent: 'center',
+            }}
             formatter={(value) => labels[value as keyof typeof colors] ?? value}
           />
           <Bar dataKey="b0_30" stackId="age" fill={colors.b0_30} name="b0_30" radius={[0, 0, 0, 0]} />

@@ -6,7 +6,7 @@ const COLORS = ['#22d3ee', '#a78bfa', '#34d399', '#fbbf24']
 
 export function CategorySplitChart({ data }: { data: Row[] }) {
   return (
-    <div className="h-[260px] w-full">
+    <div className="mx-auto h-[220px] w-full max-w-full min-w-0 sm:h-[240px] md:h-[260px]">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
@@ -15,8 +15,8 @@ export function CategorySplitChart({ data }: { data: Row[] }) {
             nameKey="name"
             cx="50%"
             cy="50%"
-            innerRadius={58}
-            outerRadius={88}
+            innerRadius="52%"
+            outerRadius="82%"
             paddingAngle={3}
           >
             {data.map((_, i) => (

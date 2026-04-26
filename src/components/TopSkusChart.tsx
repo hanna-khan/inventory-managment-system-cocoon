@@ -15,20 +15,20 @@ const BAR = '#ec4899'
 
 export function TopSkusChart({ data }: { data: Row[] }) {
   return (
-    <div className="h-[280px] w-full">
+    <div className="h-[220px] w-full min-w-0 sm:h-[260px] md:h-[280px]">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={data}
           layout="vertical"
-          margin={{ top: 4, right: 16, left: 4, bottom: 4 }}
+          margin={{ top: 4, right: 8, left: 4, bottom: 4 }}
         >
           <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" horizontal={false} />
           <XAxis type="number" hide />
           <YAxis
             type="category"
             dataKey="name"
-            width={108}
-            tick={{ fill: '#cbd5e1', fontSize: 11 }}
+            width={76}
+            tick={{ fill: '#cbd5e1', fontSize: 10 }}
             axisLine={false}
             tickLine={false}
           />
@@ -42,7 +42,7 @@ export function TopSkusChart({ data }: { data: Row[] }) {
             }}
             formatter={(value) => [`${value} orders`, 'Volume']}
           />
-          <Bar dataKey="orders" radius={[0, 8, 8, 0]} barSize={14}>
+          <Bar dataKey="orders" radius={[0, 8, 8, 0]} barSize={12} maxBarSize={18}>
             {data.map((_, i) => (
               <Cell
                 key={i}

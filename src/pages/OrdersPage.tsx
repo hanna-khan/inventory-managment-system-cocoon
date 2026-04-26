@@ -18,8 +18,8 @@ export function OrdersPage() {
   const codPct = orderRows.length ? Math.round((cod / orderRows.length) * 100) : 0
 
   return (
-    <div className="mx-auto flex max-w-[1400px] flex-col gap-6">
-      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-4 sm:gap-6">
+      <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
         <KpiCard
           title="Orders (sample set)"
           value={String(orderRows.length)}
@@ -47,25 +47,27 @@ export function OrdersPage() {
         />
       </section>
 
-      <section className="grid gap-6 lg:grid-cols-3">
-        <div className="rounded-2xl border border-white/10 bg-surface p-5 lg:col-span-2">
+      <section className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-3">
+        <div className="min-w-0 rounded-2xl border border-white/10 bg-surface p-4 sm:p-5 lg:col-span-2">
           <h2 className="text-base font-semibold text-white">Revenue trend</h2>
-          <p className="text-sm text-slate-500">Same series as dashboard — swap for your export dates</p>
+          <p className="text-xs text-slate-500 sm:text-sm">
+            Same series as dashboard — swap for your export dates
+          </p>
           <SalesTrendChart data={dailySales} />
         </div>
-        <div className="rounded-2xl border border-white/10 bg-surface p-5">
+        <div className="min-w-0 rounded-2xl border border-white/10 bg-surface p-4 sm:p-5">
           <h2 className="text-base font-semibold text-white">Courier mix (Aug sample)</h2>
-          <p className="text-sm text-slate-500">From master-style ops data</p>
+          <p className="text-xs text-slate-500 sm:text-sm">From master-style ops data</p>
           <TopSkusChart data={courierMix.map((c) => ({ name: c.name, orders: c.orders }))} />
         </div>
       </section>
 
-      <section className="rounded-2xl border border-white/10 bg-surface p-5">
+      <section className="rounded-2xl border border-white/10 bg-surface p-4 sm:p-5">
         <h2 className="text-base font-semibold text-white">Recent orders</h2>
-        <p className="text-sm text-slate-500">
+        <p className="text-xs text-slate-500 sm:text-sm">
           Mirrors Shopify export fields — import CSV to replace this table
         </p>
-        <div className="mt-4">
+        <div className="mt-3 sm:mt-4">
           <OrdersTable rows={orderRows} />
         </div>
       </section>

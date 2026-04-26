@@ -65,11 +65,11 @@ export function StockAlertsStrip({
   if (alerts.length === 0) return null
 
   return (
-    <div className="border-b border-white/10 bg-surface-elevated/90 px-4 py-2 backdrop-blur-md sm:px-6">
+    <div className="border-b border-white/10 bg-surface-elevated/90 px-3 py-2 backdrop-blur-md sm:px-6">
       <button
         type="button"
         onClick={onToggle}
-        className="flex w-full items-center justify-between gap-3 rounded-xl px-2 py-2 text-left transition hover:bg-white/5"
+        className="flex min-h-11 w-full touch-manipulation items-center justify-between gap-2 rounded-xl px-2 py-2 text-left transition hover:bg-white/5 sm:gap-3"
       >
         <div className="flex min-w-0 items-center gap-3">
           <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-magenta-dim text-magenta">
@@ -121,7 +121,7 @@ export function StockAlertsStrip({
                         <button
                           type="button"
                           onClick={() => onGoTo(a.targetNav!)}
-                          className="rounded-lg bg-white/10 px-2 py-1 text-xs font-medium text-accent transition hover:bg-accent-dim hover:text-white"
+                          className="min-h-9 touch-manipulation rounded-lg bg-white/10 px-3 py-1.5 text-xs font-medium text-accent transition hover:bg-accent-dim hover:text-white"
                         >
                           Open
                         </button>
@@ -129,7 +129,7 @@ export function StockAlertsStrip({
                       <button
                         type="button"
                         onClick={() => onDismiss(a.id)}
-                        className="rounded-lg p-1 text-slate-500 transition hover:bg-white/10 hover:text-white"
+                        className="min-h-9 min-w-9 touch-manipulation rounded-lg p-2 text-slate-500 transition hover:bg-white/10 hover:text-white"
                         aria-label={`Dismiss ${a.title}`}
                       >
                         <X className="size-4" strokeWidth={2} />

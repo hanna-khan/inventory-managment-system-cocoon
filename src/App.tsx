@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   AlertTriangle,
   Boxes,
@@ -41,8 +41,23 @@ function formatCompact(n: number) {
 
 export default function App() {
   const [nav, setNav] = useState('dashboard')
+  const [mobileNavOpen, setMobileNavOpen] = useState(false)
   const [dismissedAlertIds, setDismissedAlertIds] = useState<Set<string>>(() => new Set())
   const [alertsExpanded, setAlertsExpanded] = useState(false)
+
+  useEffect(() => {
+    if (!mobileNavOpen) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileNavOpen(false)
+    }
+    document.addEventListener('keydown', onKey)
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = prev
+    }
+  }, [mobileNavOpen])
 
   const visibleAlerts = useMemo(() => {
     const merged = [...buildStockAlerts(stockRows), ...systemAlerts]
@@ -82,13 +97,19 @@ export default function App() {
   const meta = titles[nav as keyof typeof titles] ?? titles.dashboard
 
   return (
-    <div className="flex min-h-screen bg-canvas">
-      <Sidebar active={nav} onSelect={setNav} />
-      <div className="flex min-w-0 flex-1 flex-col">
+    <div className="flex min-h-screen min-w-0 bg-canvas">
+      <Sidebar
+        active={nav}
+        onSelect={setNav}
+        mobileOpen={mobileNavOpen}
+        onMobileClose={() => setMobileNavOpen(false)}
+      />
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col">
         <TopBar
           title={meta.title}
           subtitle={meta.subtitle}
           alertCount={visibleAlerts.length}
+          onMenuClick={() => setMobileNavOpen(true)}
           onAlertsClick={
             visibleAlerts.length > 0
               ? () => setAlertsExpanded((o) => !o)
@@ -102,7 +123,7 @@ export default function App() {
           onDismiss={dismissAlert}
           onGoTo={goFromAlert}
         />
-        <main className="flex-1 overflow-y-auto px-4 py-6 sm:px-6 lg:px-8">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden px-3 py-4 pb-[max(1rem,env(safe-area-inset-bottom,0px))] sm:px-6 sm:py-6 lg:px-8">
           {nav === 'inventory' ? (
             <InventoryPage />
           ) : nav === 'orders' ? (
@@ -110,8 +131,8 @@ export default function App() {
           ) : nav === 'forecast' ? (
             <ForecastPage />
           ) : (
-            <div className="mx-auto flex max-w-[1400px] flex-col gap-6">
-              <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-4 sm:gap-6">
+              <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 xl:grid-cols-4">
                 <KpiCard
                   title="Inventory value"
                   value={formatCompact(kpiSummary.inventoryValuePkr)}
@@ -141,7 +162,7 @@ export default function App() {
                 />
               </section>
 
-              <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 xl:grid-cols-4">
                 <KpiCard
                   title="Inventory turnover"
                   value={`${kpiSummary.turnoverRatio}×`}
@@ -172,14 +193,14 @@ export default function App() {
                 />
               </section>
 
-              <section className="grid gap-6 lg:grid-cols-3">
-                <div className="rounded-2xl border border-white/10 bg-surface p-5 lg:col-span-2">
+              <section className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-3">
+                <div className="min-w-0 rounded-2xl border border-white/10 bg-surface p-4 sm:p-5 lg:col-span-2">
                   <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
-                    <div>
+                    <div className="min-w-0">
                       <h2 className="text-base font-semibold text-white">Sales trend</h2>
-                      <p className="text-sm text-slate-500">Revenue by day (sample)</p>
+                      <p className="text-xs text-slate-500 sm:text-sm">Revenue by day (sample)</p>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex shrink-0 gap-2">
                       <span className="rounded-lg bg-accent-dim px-2 py-1 text-xs font-medium text-accent">
                         Revenue
                       </span>
@@ -190,7 +211,7 @@ export default function App() {
                   </div>
                   <SalesTrendChart data={dailySales} />
                 </div>
-                <div className="rounded-2xl border border-white/10 bg-surface p-5">
+                <div className="min-w-0 rounded-2xl border border-white/10 bg-surface p-4 sm:p-5">
                   <h2 className="text-base font-semibold text-white">Category mix</h2>
                   <p className="text-sm text-slate-500">Share of demand (demo)</p>
                   <CategorySplitChart data={categorySplit} />
@@ -210,13 +231,13 @@ export default function App() {
                 </div>
               </section>
 
-              <section className="grid gap-6 lg:grid-cols-2">
-                <div className="rounded-2xl border border-white/10 bg-surface p-5">
+              <section className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-2">
+                <div className="min-w-0 rounded-2xl border border-white/10 bg-surface p-4 sm:p-5">
                   <h2 className="text-base font-semibold text-white">Top SKUs</h2>
                   <p className="text-sm text-slate-500">Order volume — align with master sheet</p>
                   <TopSkusChart data={topSkus} />
                 </div>
-                <div className="rounded-2xl border border-white/10 bg-surface p-5">
+                <div className="min-w-0 rounded-2xl border border-white/10 bg-surface p-4 sm:p-5">
                   <h2 className="text-base font-semibold text-white">Stock health</h2>
                   <p className="text-sm text-slate-500">On-hand vs reorder (sample)</p>
                   <InventoryAlertsTable rows={stockRows} />

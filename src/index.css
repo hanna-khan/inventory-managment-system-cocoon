@@ -25,6 +25,12 @@
   }
 
   #root {
-    @apply min-h-screen;
+    @apply min-h-screen min-w-0;
+  }
+
+  @supports (overflow: clip) {
+    html {
+      overflow-x: clip;
+    }
   }
 }
