@@ -1,17 +1,36 @@
 import {
   LayoutDashboard,
-  Package,
   ShoppingCart,
   Sparkles,
+  Tag,
+  Truck,
   Warehouse,
   X,
 } from 'lucide-react'
+import { skuCatalogRows } from '../data/mockDashboard'
 
-const items = [
-  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { id: 'inventory', label: 'Inventory', icon: Warehouse },
-  { id: 'orders', label: 'Orders', icon: ShoppingCart },
-  { id: 'forecast', label: 'Forecast', icon: Sparkles },
+const NAV_GROUPS = [
+  {
+    label: 'Overview',
+    items: [
+      { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    ],
+  },
+  {
+    label: 'Catalog',
+    items: [
+      { id: 'sku', label: 'SKU Catalog', icon: Tag, badge: skuCatalogRows.length },
+      { id: 'suppliers', label: 'Suppliers', icon: Truck },
+    ],
+  },
+  {
+    label: 'Operations',
+    items: [
+      { id: 'inventory', label: 'Inventory', icon: Warehouse },
+      { id: 'orders', label: 'Orders', icon: ShoppingCart },
+      { id: 'forecast', label: 'Forecast', icon: Sparkles },
+    ],
+  },
 ] as const
 
 type Props = {
@@ -43,42 +62,47 @@ export function Sidebar({ active, onSelect, mobileOpen, onMobileClose }: Props) 
   )
 
   const nav = (closeOnPick: boolean) => (
-    <nav className="flex flex-1 flex-col gap-1 p-2 sm:p-3" aria-label="Main">
-      {items.map(({ id, label, icon: Icon }) => {
-        const isActive = active === id
-        return (
-          <button
-            key={id}
-            type="button"
-            onClick={() => {
-              onSelect(id)
-              if (closeOnPick) onMobileClose()
-            }}
-            className={`flex min-h-11 items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition active:bg-white/15 ${
-              isActive
-                ? 'bg-white/10 text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]'
-                : 'text-slate-400 hover:bg-white/5 hover:text-slate-200'
-            }`}
-          >
-            <Icon className="size-4 shrink-0 opacity-90" strokeWidth={1.75} aria-hidden />
-            {label}
-          </button>
-        )
-      })}
+    <nav className="flex flex-1 flex-col gap-4 overflow-y-auto p-2 py-3 sm:p-3" aria-label="Main">
+      {NAV_GROUPS.map((group) => (
+        <div key={group.label}>
+          <p className="mb-1 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-600">
+            {group.label}
+          </p>
+          <div className="flex flex-col gap-0.5">
+            {group.items.map(({ id, label, icon: Icon, ...rest }) => {
+              const badge = 'badge' in rest ? (rest as { badge?: number }).badge : undefined
+              const isActive = active === id
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => {
+                    onSelect(id)
+                    if (closeOnPick) onMobileClose()
+                  }}
+                  className={`flex min-h-10 items-center gap-3 rounded-xl px-3 py-2 text-left text-sm font-medium transition active:bg-white/15 ${
+                    isActive
+                      ? 'bg-white/10 text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]'
+                      : 'text-slate-400 hover:bg-white/5 hover:text-slate-200'
+                  }`}
+                >
+                  <Icon className="size-4 shrink-0 opacity-90" strokeWidth={1.75} aria-hidden />
+                  <span className="flex-1 truncate">{label}</span>
+                  {badge !== undefined && (
+                    <span className="rounded-full bg-accent-dim px-1.5 py-0.5 text-[10px] font-medium tabular-nums text-accent">
+                      {badge}
+                    </span>
+                  )}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      ))}
     </nav>
   )
 
-  const footer = (
-    <div className="border-t border-white/10 p-3 sm:p-4">
-      <button
-        type="button"
-        className="flex min-h-11 w-full items-center gap-2 rounded-xl border border-white/10 bg-surface-elevated px-3 py-2 text-left text-sm text-slate-300 transition hover:border-accent/40 hover:text-white"
-      >
-        <Package className="size-4 shrink-0 text-accent" strokeWidth={1.75} aria-hidden />
-        SKU catalog
-      </button>
-    </div>
-  )
+  const footer = null
 
   return (
     <>

@@ -28,6 +28,9 @@ import {
 import { ForecastPage } from './pages/ForecastPage'
 import { InventoryPage } from './pages/InventoryPage'
 import { OrdersPage } from './pages/OrdersPage'
+import { SkuCatalogPage } from './pages/SkuCatalogPage'
+import { SuppliersPage } from './pages/SuppliersPage'
+import { ChatbotFab, ChatbotPanel } from './components/ChatbotPanel'
 
 function formatPkr(n: number) {
   return `PKR ${new Intl.NumberFormat('en-PK', { maximumFractionDigits: 0 }).format(n)}`
@@ -44,6 +47,7 @@ export default function App() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
   const [dismissedAlertIds, setDismissedAlertIds] = useState<Set<string>>(() => new Set())
   const [alertsExpanded, setAlertsExpanded] = useState(false)
+  const [chatOpen, setChatOpen] = useState(false)
 
   useEffect(() => {
     if (!mobileNavOpen) return
@@ -90,6 +94,14 @@ export default function App() {
         title: 'Forecast & EOQ',
         subtitle: 'Demand forecast and reorder math — plug in your D, S, H, and lead time.',
       },
+      sku: {
+        title: 'SKU Catalog',
+        subtitle: 'All products · 186 active SKUs',
+      },
+      suppliers: {
+        title: 'Suppliers',
+        subtitle: 'Vendor management & payables',
+      },
     }),
     [],
   )
@@ -124,7 +136,11 @@ export default function App() {
           onGoTo={goFromAlert}
         />
         <main className="flex-1 overflow-y-auto overflow-x-hidden px-3 py-4 pb-[max(1rem,env(safe-area-inset-bottom,0px))] sm:px-6 sm:py-6 lg:px-8">
-          {nav === 'inventory' ? (
+          {nav === 'sku' ? (
+            <SkuCatalogPage />
+          ) : nav === 'suppliers' ? (
+            <SuppliersPage />
+          ) : nav === 'inventory' ? (
             <InventoryPage />
           ) : nav === 'orders' ? (
             <OrdersPage />
@@ -247,6 +263,10 @@ export default function App() {
           )}
         </main>
       </div>
+
+      {/* Chatbot FAB + sliding panel */}
+      <ChatbotFab open={chatOpen} onClick={() => setChatOpen((o) => !o)} />
+      <ChatbotPanel open={chatOpen} onClose={() => setChatOpen(false)} />
     </div>
   )
 }

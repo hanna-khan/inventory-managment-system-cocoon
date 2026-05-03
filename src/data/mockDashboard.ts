@@ -310,3 +310,63 @@ export const forecastRows: ForecastRow[] = [
     reorderBy: '2026-05-08',
   },
 ]
+
+// ─── SKU Catalog ─────────────────────────────────────────────────────────────
+
+export type SkuCatalogRow = {
+  sku: string
+  product: string
+  category: string
+  supplier: string
+  unitCost: number
+  retailPrice: number
+  margin: number
+  onHand: number
+  reorderPoint: number
+  leadTimeDays: number
+  lastSold: string
+  status: 'active' | 'low' | 'critical'
+}
+
+export const skuCatalogRows: SkuCatalogRow[] = [
+  { sku: 'FPS2610011-4', product: 'Gulaab 2-Piece',      category: 'Pret',       supplier: 'Karachi Emb. Co.',   unitCost: 1_800, retailPrice: 3_200, margin: 44, onHand: 24, reorderPoint: 36, leadTimeDays: 14, lastSold: 'Apr 24', status: 'low' },
+  { sku: 'MPW251010-1',  product: 'Mauve | 2-Piece',     category: 'Pret',       supplier: 'Al-Rahim Textiles',  unitCost: 1_600, retailPrice: 2_900, margin: 45, onHand: 8,  reorderPoint: 25, leadTimeDays: 10, lastSold: 'Apr 26', status: 'critical' },
+  { sku: 'SKD-000338',   product: 'Crimson',             category: 'Lawn',       supplier: 'Faisal Fabrics',     unitCost: 950,   retailPrice: 1_800, margin: 47, onHand: 62, reorderPoint: 26, leadTimeDays: 7,  lastSold: 'Apr 26', status: 'active' },
+  { sku: 'OPS252003-3',  product: 'Fondant | 2 Piece',   category: 'Festive',    supplier: 'Lahore Prints',      unitCost: 2_200, retailPrice: 4_100, margin: 46, onHand: 15, reorderPoint: 16, leadTimeDays: 21, lastSold: 'Apr 20', status: 'low' },
+  { sku: 'MPKW252021-2', product: 'Eclipse Garden',      category: 'Unstitched', supplier: 'Faisal Fabrics',     unitCost: 1_100, retailPrice: 2_100, margin: 48, onHand: 48, reorderPoint: 15, leadTimeDays: 7,  lastSold: 'Apr 26', status: 'active' },
+  { sku: 'SKD-000412',   product: 'Lemon Tart',          category: 'Lawn',       supplier: 'Al-Rahim Textiles',  unitCost: 900,   retailPrice: 1_650, margin: 45, onHand: 5,  reorderPoint: 20, leadTimeDays: 7,  lastSold: 'Apr 26', status: 'critical' },
+  { sku: 'UNS254018-1',  product: 'Petal & Wings',       category: 'Unstitched', supplier: 'Faisal Fabrics',     unitCost: 1_050, retailPrice: 2_000, margin: 48, onHand: 33, reorderPoint: 15, leadTimeDays: 8,  lastSold: 'Apr 25', status: 'active' },
+  { sku: 'PRE258044-2',  product: 'Khaddi Bloom',        category: 'Pret',       supplier: 'Karachi Emb. Co.',   unitCost: 1_950, retailPrice: 3_600, margin: 46, onHand: 19, reorderPoint: 26, leadTimeDays: 14, lastSold: 'Apr 22', status: 'low' },
+  { sku: 'FES252109-3',  product: 'Rose Celebration',    category: 'Festive',    supplier: 'Lahore Prints',      unitCost: 2_400, retailPrice: 4_800, margin: 50, onHand: 41, reorderPoint: 12, leadTimeDays: 21, lastSold: 'Apr 15', status: 'active' },
+  { sku: 'UNS256077-5',  product: 'Ivory Fields',        category: 'Unstitched', supplier: 'Al-Rahim Textiles',  unitCost: 800,   retailPrice: 1_500, margin: 47, onHand: 0,  reorderPoint: 25, leadTimeDays: 7,  lastSold: 'Mar 28', status: 'critical' },
+  { sku: 'SKD-000501',   product: 'Indigo Mirage',       category: 'Lawn',       supplier: 'Faisal Fabrics',     unitCost: 1_000, retailPrice: 1_900, margin: 47, onHand: 71, reorderPoint: 20, leadTimeDays: 7,  lastSold: 'Apr 26', status: 'active' },
+  { sku: 'PRE261033-1',  product: 'Midnight Garden',     category: 'Pret',       supplier: 'Karachi Emb. Co.',   unitCost: 2_100, retailPrice: 3_900, margin: 46, onHand: 12, reorderPoint: 30, leadTimeDays: 14, lastSold: 'Apr 19', status: 'low' },
+]
+
+// ─── Suppliers ────────────────────────────────────────────────────────────────
+
+export type SupplierRow = {
+  supplierId: string
+  name: string
+  email: string
+  contactName: string
+  phone: string
+  city: string
+  category: string
+  paymentTerms: string
+  leadTimeDays: number
+  lastOrder: string
+  outstandingPkr: number
+  activeSkus: number
+}
+
+export const supplierRows: SupplierRow[] = [
+  { supplierId: 'SUP-001', name: 'Al-Rahim Textiles',    email: 'ahmed@alrahim.pk',   contactName: 'Ahmed Rahim',    phone: '0321-2345678', city: 'Karachi',    category: 'Fabric',       paymentTerms: 'Net 30',      leadTimeDays: 7,  lastOrder: 'Apr 22', outstandingPkr: 380_000, activeSkus: 4 },
+  { supplierId: 'SUP-002', name: 'Faisal Fabrics',       email: 'faisal@fabrics.pk',  contactName: 'Faisal Mehmood', phone: '0333-9876345', city: 'Lahore',     category: 'Fabric',       paymentTerms: '50% Advance', leadTimeDays: 8,  lastOrder: 'Apr 20', outstandingPkr: 220_000, activeSkus: 3 },
+  { supplierId: 'SUP-003', name: 'Karachi Emb. Co.',     email: 'info@kemb.pk',       contactName: 'Samina Raza',    phone: '0300-1112233', city: 'Karachi',    category: 'Embroidery',   paymentTerms: 'Advance',     leadTimeDays: 14, lastOrder: 'Apr 18', outstandingPkr: 510_000, activeSkus: 2 },
+  { supplierId: 'SUP-004', name: 'Lahore Prints',        email: 'usman@lprints.pk',   contactName: 'Usman Malik',    phone: '0345-6667788', city: 'Lahore',     category: 'Printing',     paymentTerms: 'Net 15',      leadTimeDays: 21, lastOrder: 'Apr 10', outstandingPkr: 175_000, activeSkus: 2 },
+  { supplierId: 'SUP-005', name: 'Zeenat Packaging',     email: 'z.pack@gmail.com',   contactName: 'Zeenat Hussain', phone: '0311-4445596', city: 'Karachi',    category: 'Packaging',    paymentTerms: 'Advance',     leadTimeDays: 5,  lastOrder: 'Apr 26', outstandingPkr: 42_000,  activeSkus: 6 },
+  { supplierId: 'SUP-006', name: 'Premier Accessories',  email: 'bilal@primac.pk',    contactName: 'Bilal Khan',     phone: '0312-7778889', city: 'Faisalabad', category: 'Accessories',  paymentTerms: 'Net 30',      leadTimeDays: 12, lastOrder: 'Mar 30', outstandingPkr: 95_000,  activeSkus: 1 },
+  { supplierId: 'SUP-007', name: 'Textile Hub Multan',   email: 'nadeem@texhub.pk',   contactName: 'Nadeem Baig',    phone: '0301-2223334', city: 'Multan',     category: 'Fabric',       paymentTerms: 'Net 45',      leadTimeDays: 18, lastOrder: 'Mar 15', outstandingPkr: 290_000, activeSkus: 1 },
+  { supplierId: 'SUP-008', name: 'Creative Print Works', email: 'rabia@cpw.pk',       contactName: 'Rabia Shah',     phone: '0322-5556678', city: 'Karachi',    category: 'Printing',     paymentTerms: 'Net 30',      leadTimeDays: 10, lastOrder: 'Feb 28', outstandingPkr: 68_000,  activeSkus: 2 },
+]
