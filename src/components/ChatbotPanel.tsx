@@ -60,7 +60,7 @@ function getBotReply(input: string): string {
     return 'The Forecast page provides EOQ calculations and demand projections. Check it out in the sidebar.'
 
   if (/revenue|sale(s)?|pkr/.test(q))
-    return 'Period revenue is PKR 19.50M for the sample window. Open the Dashboard for the full sales trend chart.'
+    return 'Period revenue is PKR 17.11M for August 2025 (sample window). Open the Dashboard for the full sales trend chart.'
 
   if (/help|what can you|command/.test(q))
     return 'I can answer questions about:\n• Stock levels & alerts\n• Order status\n• Forecast & EOQ\n• Revenue & KPIs\n\nJust ask in plain English!'

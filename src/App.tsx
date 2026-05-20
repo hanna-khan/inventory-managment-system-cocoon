@@ -96,7 +96,7 @@ export default function App() {
       },
       sku: {
         title: 'SKU Catalog',
-        subtitle: 'All products · 186 active SKUs',
+        subtitle: 'All products · 1,117 active SKUs (12-month rolling)',
       },
       suppliers: {
         title: 'Suppliers',
